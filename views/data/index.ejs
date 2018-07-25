@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Pagination</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h3 >Pagination Page</h3>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View Projects
+        <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+            <li id="recentProject"><a>Recent Projects</a></li>
+            <li id="usernameAsc"><a>Order By Username Asc</a></li>
+            <li id="ptitleAsc"><a>Order By Project Title Asc</a></li>
+            <li id="cnameAsc"><a>Order By Category Name ASC</a></li>
+        </ul>
+    </div>
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Project Title</th>
+                <th scope="col">Username</th>
+                <th scope="col">CategoryName</th>
+            </tr>
+        </thead>
+        <tbody id="displayData">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+<nav aria-label="...">
+    <ul class="pagination">
+        <li><a href="#">&laquo;</a></li>
+        <li class="active"><a id="page1">1</a></li>
+        <li><a id="page2">2</a></li>
+        <li><a id="page3">3</a></li>
+        <li><a id="page4">4</a></li>
+        <li><a href="#">&raquo;</a></li>
+    </ul>
+</nav>
+
+
+<!--Ajax query for ORDER BY implementation-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var current_page = 1;
+        var items_per_page = 2;
+        var start_index = (current_page-1) * items_per_page;
+        var end_index = start_index + items_per_page;
+        var result="";
+
+        $("#page1").click(function(){
+            current_page = 1;
+            start_index = (current_page-1) * items_per_page;
+            end_index = start_index + items_per_page;
+            $("#displayData").children("tr").remove();
+                for (var i = start_index; i < end_index; i++) {
+                    $("#displayData").append("<tr><td>" + result[i].project_title + "</td><td>" + result[i].username + "</td><td>" + result[i].category_name+ "</td></tr>");
+            }
+        });
+
+        $("#page2").click(function(){
+            current_page = 2;
+            start_index = (current_page-1) * items_per_page;
+            end_index = start_index + items_per_page;
+            $("#displayData").children("tr").remove();
+                for (var i = start_index; i < end_index; i++) {
+                    $("#displayData").append("<tr><td>" + result[i].project_title + "</td><td>" + result[i].username + "</td><td>" + result[i].category_name+ "</td></tr>");
+            }
+        });
+
+        $("#page3").click(function(){
+            current_page = 3;
+            start_index = (current_page-1) * items_per_page;
+            end_index = start_index + items_per_page;
+            $("#displayData").children("tr").remove();
+                for (var i = start_index; i < end_index; i++) {
+                    $("#displayData").append("<tr><td>" + result[i].project_title + "</td><td>" + result[i].username + "</td><td>" + result[i].category_name+ "</td></tr>");
+            }
+        });
+
+        $("#page4").click(function(){
+            current_page = 4;
+            start_index = (current_page-1) * items_per_page;
+            end_index = start_index + items_per_page;
+            $("#displayData").children("tr").remove();
+                for (var i = start_index; i < end_index; i++) {
+                    $("#displayData").append("<tr><td>" + result[i].project_title + "</td><td>" + result[i].username + "</td><td>" + result[i].category_name+ "</td></tr>");
+            }
+        });
+
+        $("#recentProject").click(function() {
+            var orderBy = "";
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/data/get",
+                dataType: "json",
+                data: {
+                    orderBy: orderBy,
+                },
+                success:function(response) {
+                    console.log("Recent Projects");
+                    result = response;
+                    console.log(result);
+                    $("#displayData").children("tr").remove();
+                    for(var i = start_index; i < end_index; i++) {
+                        $("#displayData").append("<tr><td>" + response[i].project_title + "</td><td>" + response[i].username + "</td><td>" + response[i].category_name+ "</td></tr>");
+                    }
+                },
+                 error:function(jqXHR, textStatus, errorThrown) {
+                    alert('error ' + textStatus + " " + errorThrown);
+                }
+            });
+        });
+
+        $("#usernameAsc").click(function() {
+            var orderBy = "u.username";
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/data/get",
+                dataType: "json",
+                data: {
+                    orderBy: orderBy
+                },
+                success:function(response) {
+                    console.log("orderBy username ASC");
+                    result = response;
+                    console.log(result);
+                    $("#displayData").children("tr").remove();
+                    for(var i = start_index; i < end_index; i++) {
+                        $("#displayData").append("<tr><td>" + response[i].project_title + "</td><td>" + response[i].username + "</td><td>" + response[i].category_name+ "</td></tr>");
+                    }
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+                    alert('error ' + textStatus + " " + errorThrown);
+                }
+            });
+        });
+
+        $("#ptitleAsc").click(function() {
+            var orderBy="p.project_title";
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/data/get",
+                dataType: "json",
+                data: {
+                    orderBy: orderBy
+                },
+                success:function(response) {
+                    console.log("orderBy project_title ASC");
+                    result = response;
+                    console.log(result);
+                    $("#displayData").children("tr").remove();
+                    for(var i = start_index; i < end_index; i++) {
+                        $("#displayData").append("<tr><td>" + response[i].project_title + "</td><td>" + response[i].username + "</td><td>" + response[i].category_name+ "</td></tr>");
+                    }
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+                    alert('error ' + textStatus + " " + errorThrown);
+                }
+            });
+        });
+
+        $("#cnameAsc").click(function() {
+            var orderBy = "c.category_name";
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/data/get",
+                dataType: "json",
+                data: {
+                    orderBy: orderBy
+                },
+                success:function(response) {
+                    console.log("orderBy category_name ASC");
+                    result = response;
+                    console.log(result);
+                    $("#displayData").children("tr").remove();
+                    for(var i = start_index; i < end_index; i++) {
+                        $("#displayData").append("<tr><td>" + response[i].project_title + "</td><td>" + response[i].username + "</td><td>" + response[i].category_name+ "</td></tr>");
+                    }
+                },
+                 error:function(jqXHR, textStatus, errorThrown) {
+                    alert('error ' + textStatus + " " + errorThrown);
+                }
+            });
+        });
+    });
+    </script>
+</body>
+
+</html>

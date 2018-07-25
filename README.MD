@@ -1,9 +1,11 @@
 #1  Overall
+
 	Author:   Yujia Zhai
 	Date:     07/11/2018
 	Included: Express.js, node.js, MySQL, Ajax, JavaScript, HTML, CSS, BootStrap, JQuery
 
 #2  Application Overview
+
 	|Node Authtication Homepage (Passport uses md5 hash generator algorithm)
 	|--	Local Login
 	|--	Local Sign Up
@@ -18,6 +20,7 @@
 	JQuery Pagination
 
 #3  Running Configuration
+
     MySQL Port: 8889
     Localhost : 3000
     Database  : lemonyujia (includs 4 imported tables and 1 created table)
